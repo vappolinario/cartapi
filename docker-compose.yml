@@ -1,0 +1,55 @@
+version: '3.4'
+
+services:
+  #  mariadb:
+  #    image: mariadb
+  #    networks:
+  #      - net
+  #    ports:
+  #      - "3306:3306"
+  #    volumes:
+  #      - "/var/lib/mysql:/var/lib/mysql"
+  #    environment:
+  #      MYSQL_ROOT_PASSWORD: admin
+
+  #memcached:
+  #  image: memcached
+  #  networks:
+  #    - net
+  #  ports:
+  #    - "11211:11211"
+
+  api:
+    image: cart/cart-api
+    build:
+      context: .
+      dockerfile: src/Cart/Dockerfile
+    networks:
+      - net
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Compose
+      - ASPNETCORE_URLS=http://+:80
+    ports:
+      - "5000:80"
+        #depends_on:
+        #  - memcached
+        #  - mariadb
+
+  silo:
+    image: cart/cart-silo
+    build:
+      context: .
+      dockerfile: src/Silo/Dockerfile
+    networks:
+      - net
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Compose
+      - ASPNETCORE_URLS=http://+:80
+    ports:
+      - "5001:80"
+        #depends_on:
+        #  - memcached
+        #  - mariadb
+networks:
+  net:
+    driver: bridge
