@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{E0CCF8F0-7FAC-438F-B8F5-EBAE928E8464}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "src\Tests\Tests.csproj", "{E0CCF8F0-7FAC-438F-B8F5-EBAE928E8464}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grains", "Grains\Grains.csproj", "{BE3754D9-45D1-4D82-83B9-05EAF4965780}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grains", "src\Grains\Grains.csproj", "{BE3754D9-45D1-4D82-83B9-05EAF4965780}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrainInterfaces", "GrainInterfaces\GrainInterfaces.csproj", "{D18ACC5D-8B2F-4257-9CB3-4139161A98E3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrainInterfaces", "src\GrainInterfaces\GrainInterfaces.csproj", "{D18ACC5D-8B2F-4257-9CB3-4139161A98E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cart", "Cart\Cart.csproj", "{5B858C12-51F7-40D0-A506-08406C95778A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cart", "src\Cart\Cart.csproj", "{5B858C12-51F7-40D0-A506-08406C95778A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silo", "Silo\Silo.csproj", "{08722C52-E243-4A53-8CDD-CC5CA2853B57}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silo", "src\Silo\Silo.csproj", "{08722C52-E243-4A53-8CDD-CC5CA2853B57}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
