@@ -14,10 +14,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Silo\Silo.csproj" />
     <ProjectReference Include="..\Grains\Grains.csproj" />
     <ProjectReference Include="..\GrainInterfaces\GrainInterfaces.csproj" />
     <ProjectReference Include="..\Cart\Cart.csproj" />
+    <ProjectReference Include="..\Silo\Silo.csproj" />
   </ItemGroup>
 
 </Project>
