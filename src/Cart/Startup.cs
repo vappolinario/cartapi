@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using System.Net;
 using GrainInterfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -7,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Orleans;
+using Orleans.Configuration;
 
 namespace Cart
 {
@@ -28,8 +31,15 @@ namespace Cart
 
         private IClusterClient CreateClusterClient(IServiceProvider serviceProvider)
         {
+            var gateways = System.Net.Dns.GetHostAddresses("silo").Select(ip => new IPEndPoint(ip, 30000)).ToArray();
+
             var client = new ClientBuilder()
-                 .UseLocalhostClustering(serviceId: "orleans-cartapi")
+                 .UseStaticClustering(gateways)
+                 .Configure<ClusterOptions>(options =>
+                     {
+                         options.ClusterId = "DefaultCluster";
+                         options.ServiceId = "orleans-cartapi";
+                     })
                  .ConfigureApplicationParts(p => p.AddApplicationPart(typeof(ICartGrain).Assembly).WithReferences())
                  .ConfigureLogging(logging => logging.AddConsole())
                  .Build();

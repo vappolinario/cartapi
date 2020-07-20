@@ -1,3 +1,5 @@
+DROP DATABASE IF EXISTS `CartApi`;
+CREATE DATABASE CartApi;
 USE CartApi;
 -- The design criteria for this table are:
 --
@@ -44,6 +46,19 @@ USE CartApi;
 --
 -- 7. In the storage operations queries the columns need to be in the exact same order
 -- since the storage table operations support optionally streaming.
+DROP TABLE IF EXISTS `OrleansQuery`;
+DROP TABLE IF EXISTS `OrleansStorage`;
+DROP PROCEDURE IF EXISTS `ClearStorage`;
+DROP PROCEDURE IF EXISTS `WriteToStorage`;
+
+CREATE TABLE OrleansQuery
+(
+    QueryKey VARCHAR(64) NOT NULL,
+    QueryText VARCHAR(8000) NOT NULL,
+
+    CONSTRAINT OrleansQuery_Key PRIMARY KEY(QueryKey)
+);
+
 CREATE TABLE OrleansStorage
 (
     -- These are for the book keeping. Orleans calculates

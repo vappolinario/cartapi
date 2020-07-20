@@ -5,10 +5,10 @@ FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
 COPY . ./
 RUN dotnet restore "src/Silo"
-RUN dotnet build "src/Silo" -c Release -o /app/build
+RUN dotnet build "src/Silo" -c Debug -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "src/Silo" -c Release -o /app/publish
+RUN dotnet publish "src/Silo" -c Debug -o /app/publish
 
 FROM base AS final
 WORKDIR /app
