@@ -2,15 +2,18 @@
 using Orleans;
 using Orleans.Configuration;
 using Orleans.Hosting;
+using System;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Silo
 {
     public class Program
     {
+        private static readonly AutoResetEvent _closing = new AutoResetEvent(false);
         static async Task Main(string[] args)
         {
             var ip = Dns.GetHostEntry(Dns.GetHostName())
@@ -36,8 +39,14 @@ namespace Silo
             using (var host = siloBuilder.Build())
             {
                 await host.StartAsync();
-                await Task.Run(() => System.Threading.Thread.Sleep(System.Threading.Timeout.Infinite));
+                Console.CancelKeyPress += new ConsoleCancelEventHandler(OnExit);
+                _closing.WaitOne();
             }
+        }
+
+        private static void OnExit(object sender, ConsoleCancelEventArgs e)
+        {
+            _closing.Set();
         }
     }
 }
