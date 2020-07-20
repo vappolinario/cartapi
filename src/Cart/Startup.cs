@@ -32,25 +32,30 @@ namespace Cart
 
         private IClusterClient CreateClusterClient(IServiceProvider serviceProvider)
         {
-            var gateways = System.Net.Dns.GetHostAddresses("silo").Select(ip => new IPEndPoint(ip, 30000)).ToArray();
+            var gateways = System.Net.Dns
+              .GetHostAddresses(Configuration.GetValue<string>("Orleans:SiloHost"))
+              .Select(ip => new IPEndPoint(
+                    ip,
+                    Configuration.GetValue<int>("Orleans:SiloPort")
+                    ))
+              .ToArray();
 
             var client = new ClientBuilder()
               .UseAdoNetClustering(options =>
                   {
-                      options.Invariant = "MySql.Data.MySqlClient";
-                      options.ConnectionString = "host=mariadb;port=3306;user id=root;password=admin;database=CartApi";
+                      options.Invariant = Configuration.GetValue<string>("Orleans:Invariant");
+                      options.ConnectionString = Configuration.GetValue<string>("Orleans:ConnectionString");
                   })
                  .Configure<ClusterOptions>(options =>
                      {
-                         options.ClusterId = "DefaultCluster-01";
-                         options.ServiceId = "orleans-cartapi";
+                         options.ClusterId = Configuration.GetValue<string>("Orleans:ClusterId");
+                         options.ServiceId = Configuration.GetValue<string>("Orleans:ServiceId");
                      })
                  .ConfigureApplicationParts(p => p.AddApplicationPart(typeof(ICartGrain).Assembly).WithReferences())
                  .ConfigureLogging(logging => logging.AddConsole())
                  .Build();
 
             client.Connect().Wait();
-
             return client;
         }
 
@@ -61,13 +66,9 @@ namespace Cart
             {
                 app.UseDeveloperExceptionPage();
             }
-
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
