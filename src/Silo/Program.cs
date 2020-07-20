@@ -23,7 +23,7 @@ namespace Silo
             var siloBuilder = new SiloHostBuilder()
               .Configure<ClusterOptions>(options =>
                 {
-                    options.ClusterId = "DefaultCluster";
+                    options.ClusterId = "DefaultCluster-01";
                     options.ServiceId = "orleans-cartapi";
                 })
               .UseDevelopmentClustering(new IPEndPoint(ip, 30000))
@@ -34,13 +34,20 @@ namespace Silo
                       options.ConnectionString = "host=mariadb;port=3306;user id=root;password=admin;database=CartApi";
                       options.UseJsonFormat = true;
                   })
+              .UseAdoNetClustering(options =>
+                  {
+                      options.Invariant = "MySql.Data.MySqlClient";
+                      options.ConnectionString = "host=mariadb;port=3306;user id=root;password=admin;database=CartApi";
+                  })
               .ConfigureLogging(logging => logging.AddConsole());
+
 
             using (var host = siloBuilder.Build())
             {
                 await host.StartAsync();
                 Console.CancelKeyPress += new ConsoleCancelEventHandler(OnExit);
                 _closing.WaitOne();
+                await host.StopAsync();
             }
         }
 

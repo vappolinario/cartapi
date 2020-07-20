@@ -24,6 +24,7 @@ namespace Grains
 
         public async Task<Cart> GetCart()
         {
+
             await ReadStateAsync();
 
             if (State.State != null)

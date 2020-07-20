@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Orleans;
 using Orleans.Configuration;
+using Orleans.Hosting;
 
 namespace Cart
 {
@@ -34,10 +35,14 @@ namespace Cart
             var gateways = System.Net.Dns.GetHostAddresses("silo").Select(ip => new IPEndPoint(ip, 30000)).ToArray();
 
             var client = new ClientBuilder()
-                 .UseStaticClustering(gateways)
+              .UseAdoNetClustering(options =>
+                  {
+                      options.Invariant = "MySql.Data.MySqlClient";
+                      options.ConnectionString = "host=mariadb;port=3306;user id=root;password=admin;database=CartApi";
+                  })
                  .Configure<ClusterOptions>(options =>
                      {
-                         options.ClusterId = "DefaultCluster";
+                         options.ClusterId = "DefaultCluster-01";
                          options.ServiceId = "orleans-cartapi";
                      })
                  .ConfigureApplicationParts(p => p.AddApplicationPart(typeof(ICartGrain).Assembly).WithReferences())
